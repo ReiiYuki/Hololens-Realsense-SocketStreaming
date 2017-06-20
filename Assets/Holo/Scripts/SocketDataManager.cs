@@ -11,9 +11,6 @@ public class SocketDataManager : MonoBehaviour {
 	void Awake () {
         socket = GetComponent<SocketIOComponent>();
         StartCoroutine(ConnectToServer());
-        socket.On("leftHandPositionUpdate", OnLeftHandPositionUpdate);
-        socket.On("rightHandPositionUpdate", OnRightHandPositionUpdate);
-        socket.On("GestureUpdate", OnGestureUpdate);
     }
 
     IEnumerator ConnectToServer()
@@ -22,17 +19,20 @@ public class SocketDataManager : MonoBehaviour {
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["type"] = "Holo";
         socket.Emit("identify", new JSONObject(data));
+        socket.On("leftHandPositionUpdate", OnLeftHandPositionUpdate);
+        socket.On("rightHandPositionUpdate", OnRightHandPositionUpdate);
+        socket.On("GestureUpdate", OnGestureUpdate);
         yield break;
     }
 
     void OnLeftHandPositionUpdate(SocketIOEvent evt)
     {
-        
+        Debug.Log("PosL : " + evt.data.GetField("x") + "," + evt.data.GetField("y") + "," + evt.data.GetField("z"));
     }
 
     void OnRightHandPositionUpdate(SocketIOEvent evt)
     {
-
+        Debug.Log("PosR : " + evt.data.GetField("x") + "," + evt.data.GetField("y") + "," + evt.data.GetField("z"));
     }
 
     void OnGestureUpdate(SocketIOEvent evt)
