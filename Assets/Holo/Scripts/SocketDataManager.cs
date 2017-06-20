@@ -21,7 +21,7 @@ public class SocketDataManager : MonoBehaviour {
         socket.Emit("identify", new JSONObject(data));
         socket.On("leftHandPositionUpdate", OnLeftHandPositionUpdate);
         socket.On("rightHandPositionUpdate", OnRightHandPositionUpdate);
-        socket.On("GestureUpdate", OnGestureUpdate);
+        socket.On("gestureUpdate", OnGestureUpdate);
         yield break;
     }
 
@@ -37,6 +37,6 @@ public class SocketDataManager : MonoBehaviour {
 
     void OnGestureUpdate(SocketIOEvent evt)
     {
-
+        Debug.Log("Ges : " + evt.data.GetField("hand") + " " + evt.data.GetField("gesture"));
     }
 }
