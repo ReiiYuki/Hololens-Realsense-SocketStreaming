@@ -6,6 +6,7 @@ using SocketIO;
 public class SocketDataManager : MonoBehaviour {
 
     SocketIOComponent socket;
+    public GameObject handPositionHandler,gestureHandler;
 
 	// Use this for initialization
 	void Awake () {
@@ -27,16 +28,17 @@ public class SocketDataManager : MonoBehaviour {
 
     void OnLeftHandPositionUpdate(SocketIOEvent evt)
     {
-        Debug.Log("PosL : " + evt.data.GetField("x") + "," + evt.data.GetField("y") + "," + evt.data.GetField("z"));
+        handPositionHandler.SendMessage("OnLeftHandChange", new Vector3(float.Parse(evt.data.GetField("x").str), float.Parse(evt.data.GetField("y").str), float.Parse(evt.data.GetField("z").str)));
     }
 
     void OnRightHandPositionUpdate(SocketIOEvent evt)
     {
-        Debug.Log("PosR : " + evt.data.GetField("x") + "," + evt.data.GetField("y") + "," + evt.data.GetField("z"));
+        handPositionHandler.SendMessage("OnRightHandChange", new Vector3(float.Parse(evt.data.GetField("x").str), float.Parse(evt.data.GetField("y").str), float.Parse(evt.data.GetField("z").str)));
     }
 
     void OnGestureUpdate(SocketIOEvent evt)
     {
-        Debug.Log("Ges : " + evt.data.GetField("hand") + " " + evt.data.GetField("gesture"));
+        gestureHandler.SendMessage("OnGestureUpdate", new GestureData(evt.data.GetField("gesture").str, evt.data.GetField("hand").str));
     }
+
 }
